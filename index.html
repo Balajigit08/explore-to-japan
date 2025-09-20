@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Explore to Japan</title>
@@ -21,6 +20,7 @@
         <div class="lang-switch">
             <span class="active">ENG</span> / <span class="inactive">JAP</span>
         </div>
+    
     </header>
     <hr>
     <nav class="main-nav">
@@ -30,13 +30,15 @@
             <li><a href="#">JAPAN CULTURE</a></li>
             <li><a href="#">WEEKEND GETAWAYS</a></li>
         </ul>
+        <div class="hamburger">☰</div>
+
     </nav>
 
     <section class="content-section">
         <img src="images/Header Image.png" alt="header-image" class="bgimage">
         <div class="text-content">
             <h1 class="title">Let us plan you a perfect Japan Holiday</h1>
-            <p>Our My Japan, one of the best travel agencies in Japan, offers custom-crafted tour packages
+            <p class="para1">Our My Japan, one of the best travel agencies in Japan, offers custom-crafted tour packages
                 for unforgettable holiday experiences across the country.</p>
             <div class="slider-wrapper">
                 <div class="image-slider-track">
@@ -76,7 +78,7 @@
     <div class="package-content">
         <div class="headline">
             <h1>Popular Destinations</h1>
-            <p>Our My Japan, one of the best travel agencies in Japan, offers custom-crafted tour packages for
+            <p class="para">Our My Japan, one of the best travel agencies in Japan, offers custom-crafted tour packages for
                 unforgettable holiday experiences across the country <br>
                 our my japan,one of the best traveel agencies in japan,offers custom -crafted tour packages for
                 unforgettable holiday experiences across.</p>
@@ -143,7 +145,6 @@
     <div class="story-japan">
         <img src="images/Property 1=Default.png" alt="Default-image" class="header-image">
         <h1 class="story-text">Find your story in Japan</h1>
-
         <div class="tab-navigation">
             <ul class="tab-content">
                 <li><a href="#">Best family time Destination</a></li>
@@ -151,15 +152,9 @@
                 <li><a href="#">Best Hotels</a></li>
                 <li><a href="#">Exciting adventures destination</a></li>
             </ul>
-            <div class="map-image">
-                <img src="images/image 25.png" alt="map" class="map">
-            </div>
+            <img src="images/image 25.png" alt="map">
         </div>
-
-    </div>
-
-
-
+     </div>
     <section class="latest-articles">
         <h1>Read our latest articles</h1>
         <p class="subtitle">
@@ -234,7 +229,7 @@
         <img src="images/Rectangle 5367.png" alt="Photo 2" class="top-img">
         <img src="images/Rectangle 5366.png" alt="Photo 3" class="top-img">
         <img src="images/Rectangle 5365.png" alt="Photo 4" class="top-img">
-
+        
         <img src="images/Rectangle 5368.png" alt="Photo 5" class="bottom-img">
         <img src="images/Rectangle 5371.png" alt="Photo 6" class="bottom-img">
         <img src="images/Rectangle 5370.png" alt="Photo 7" class="bottom-img">
@@ -254,42 +249,63 @@
 
 </body>
 <script>
-    const sliderTrack = document.querySelector('.image-slider-track');
-    const imageItems = document.querySelectorAll('.image-item');
-    const leftArrow = document.getElementById('left-arrow');
-    const rightArrow = document.getElementById('right-arrow');
+const sliderTrack = document.querySelector('.image-slider-track');
+const imageItems = document.querySelectorAll('.image-item');
+const leftArrow = document.getElementById('left-arrow');
+const rightArrow = document.getElementById('right-arrow');
 
-    let currentSlide = 0;
-    const visibleItems = 4; // Number of items you want visible
-    const totalItems = imageItems.length;
+let currentSlide = 0;
 
-    const slideWidth = imageItems[0].offsetWidth + 75; // width + gap
+// Get slide width including gap
+function getSlideWidth() {
+    const style = window.getComputedStyle(imageItems[0]);
+    const marginRight = parseInt(style.marginRight) || 0;
+    return imageItems[0].offsetWidth + marginRight;
+}
 
-    function updateSlider() {
-        const offset = currentSlide * slideWidth;
-        sliderTrack.style.transform = `translateX(-${offset}px)`;
-    }
+// Calculate visible items based on container width
+function getVisibleItems() {
+    const containerWidth = sliderTrack.parentElement.offsetWidth;
+    const itemWidth = imageItems[0].offsetWidth;
+    return Math.floor(containerWidth / itemWidth);
+}
 
-    rightArrow.addEventListener('click', () => {
-        if (currentSlide < totalItems - visibleItems) {
-            currentSlide++;
-            updateSlider();
-        }
-    });
+// Update slider position
+function updateSlider() {
+    const slideWidth = getSlideWidth();
+    const maxOffset = sliderTrack.scrollWidth - sliderTrack.parentElement.offsetWidth;
+    let offset = currentSlide * slideWidth;
+    if(offset > maxOffset) offset = maxOffset; // prevent last slide cut-off
+    sliderTrack.style.transform = `translateX(-${offset}px)`;
+}
 
-    leftArrow.addEventListener('click', () => {
-        if (currentSlide > 0) {
-            currentSlide--;
-            updateSlider();
-        }
-    });
-
-    window.addEventListener('resize', () => {
-        // Recalculate on resize to stay responsive
+// Right arrow click
+rightArrow.addEventListener('click', () => {
+    const visibleItems = getVisibleItems();
+    if(currentSlide < imageItems.length - visibleItems) {
+        currentSlide++;
         updateSlider();
-    });
-    
-    
+    }
+});
+
+// Left arrow click
+leftArrow.addEventListener('click', () => {
+    if(currentSlide > 0) {
+        currentSlide--;
+        updateSlider();
+    }
+});
+
+// Recalculate on resize
+window.addEventListener('resize', updateSlider);
+ const hamburger = document.querySelector(".hamburger");
+  const navLinks = document.querySelector(".main-nav ul");
+
+  hamburger.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
+
+
 </script>
 
 
